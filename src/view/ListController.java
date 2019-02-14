@@ -180,6 +180,10 @@ public class ListController {
 				   }
 			   }
 		   }
+		   enterTitle.clear();
+		   enterArtist.clear();
+		   enterAlbum.clear();
+		   enterYear.clear();
 	   }
 	   
 	   /**
