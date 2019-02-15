@@ -13,8 +13,12 @@ public class SongComparator implements Comparator<Song>{
 
 	@Override
 	public int compare(Song s1, Song s2) {
-		return s1.getTitle().toLowerCase()
-				.compareTo(s2.getTitle().toLowerCase());
+		
+		if(s1.getTitle().toLowerCase().equals(s2.getTitle().toLowerCase())){
+			return s1.getArtist().toLowerCase().compareTo(s2.getArtist().toLowerCase());
+		}
+		else
+			return s1.getTitle().toLowerCase().compareTo(s2.getTitle().toLowerCase());
 	}
 }
 

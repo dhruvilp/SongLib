@@ -16,6 +16,7 @@ import java.util.Optional;
 import java.io.PrintWriter;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
 
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
@@ -62,7 +63,7 @@ public class ListController {
                     protected void updateItem(Song s, boolean bool) {
                         super.updateItem(s, bool);
                         
-                        if (s != null) {setText(s.getTitle());}
+                        if (s != null) {setText("'"+s.getTitle()+"' by "+s.getArtist());}
                         else if (s == null){setText(null);}
                     }
 	 
@@ -114,17 +115,25 @@ public class ListController {
 		   TextField albumTextField = new TextField(songAlbum.getText());
 		   TextField yearTextField = new TextField(songYear.getText());
 		   
-		   if(albumTextField.getText() == null || yearTextField.getText() == null) {
-			   Song temp = new Song(titleTextField.getText(),artistTextField.getText(),albumTextField.getText(),yearTextField.getText());
-			   obsrList.set(index,temp);
-			   listView.getSelectionModel().select(index);
-			   showSong();
-		   }
-		   else {
-			   while(albumTextField == null || yearTextField == null) {
+//		   if(albumTextField.getText() == null || yearTextField.getText() == null) {
+//			   Song temp = new Song(titleTextField.getText(),artistTextField.getText(),albumTextField.getText(),yearTextField.getText());
+//			   obsrList.set(index,temp);
+//			   listView.getSelectionModel().select(index);
+//			   showSong();
+
+		   Optional<ButtonType> result;
+		   Alert alert = new Alert(AlertType.WARNING, "yes", ButtonType.YES);
+		   alert.setTitle("Update Item");
+		   String content = "Are you sure you want to update this song ?" ;
+		   alert.setContentText(content);
+		   result = alert.showAndWait();
+		   
+		   if(result.isPresent()){
+			   if(albumTextField == null || yearTextField == null) {
 				   Song temp = new Song(titleTextField.getText(),artistTextField.getText(),albumTextField.getText(),yearTextField.getText());
 				   obsrList.set(index,temp);
 				   listView.getSelectionModel().select(index);
+				   FXCollections.sort(obsrList, new SongComparator());
 				   showSong();
 			   }
 			   String error = checkFields(titleTextField.getText(), artistTextField.getText());
@@ -135,6 +144,7 @@ public class ListController {
 				   Song temp = new Song(titleTextField.getText(),artistTextField.getText(),albumTextField.getText(),yearTextField.getText());
 				   obsrList.set(index,temp);
 				   listView.getSelectionModel().select(index);
+				   FXCollections.sort(obsrList, new SongComparator());
 				   showSong();
 			   }
 		   }
@@ -147,8 +157,9 @@ public class ListController {
 	   @FXML
 	   private void handleAddButton(ActionEvent event) {
 		   
-		   if (obsrList.isEmpty()){showError("Error! Enter valid inputs.");return;}
-		   
+		   if(enterTitle==null && enterArtist==null) {
+			   if (obsrList.isEmpty()){showError("Error! Enter valid inputs.");return;}
+		   }		   
 		   int index = listView.getSelectionModel().getSelectedIndex();
 		   TextField titleTextField = new TextField(enterTitle.getText());
 		   TextField artistTextField = new TextField(enterArtist.getText());
@@ -158,6 +169,15 @@ public class ListController {
 		   String error = checkFields(titleTextField.getText(), artistTextField.getText(),
 				   albumTextField.getText(), yearTextField.getText());
 		   
+		   if(error == null) {
+				  if(enterTitle != null && enterArtist != null) {
+				   Alert alert = new Alert(AlertType.CONFIRMATION);
+				   alert.setTitle("Add Item");
+				   String content = "Are you sure you want to add this song " + enterTitle.getText() + " by " + enterArtist.getText() + " ?" ;
+				   alert.setContentText(content);
+				   alert.showAndWait();
+			   }
+		   }
 		   if (error != null) {
 			   showError(error);
 		   } 
