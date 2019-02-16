@@ -137,7 +137,7 @@
             </HBox>
             <HBox prefHeight="35.0" prefWidth="315.0">
                <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Date:">
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Year:">
                      <HBox.margin>
                         <Insets right="20.0" top="10.0" />
                      </HBox.margin>

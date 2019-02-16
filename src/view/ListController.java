@@ -114,15 +114,9 @@ public class ListController {
 		   TextField artistTextField = new TextField(songArtist.getText());
 		   TextField albumTextField = new TextField(songAlbum.getText());
 		   TextField yearTextField = new TextField(songYear.getText());
-		   
-//		   if(albumTextField.getText() == null || yearTextField.getText() == null) {
-//			   Song temp = new Song(titleTextField.getText(),artistTextField.getText(),albumTextField.getText(),yearTextField.getText());
-//			   obsrList.set(index,temp);
-//			   listView.getSelectionModel().select(index);
-//			   showSong();
 
 		   Optional<ButtonType> result;
-		   Alert alert = new Alert(AlertType.WARNING, "yes", ButtonType.YES);
+		   Alert alert = new Alert(AlertType.CONFIRMATION, "yes", ButtonType.YES);
 		   alert.setTitle("Update Item");
 		   String content = "Are you sure you want to update this song ?" ;
 		   alert.setContentText(content);
@@ -137,7 +131,15 @@ public class ListController {
 				   showSong();
 			   }
 			   String error = checkFields(titleTextField.getText(), artistTextField.getText());
-			   if (error != null) {
+			   if(songYear.getText() == null && songAlbum.getText() == null && error!=null) {
+				   showError("There is nothing to update!");
+			   }
+			   else if (songYear.getText() != null) {
+				   if(!songYear.getText().trim().matches("[0-9]+")) {
+				   showError("Only numbers are acceptable!");
+				   }
+			   }
+			   else if (error != null && songYear.getText() == null) {
 				   showError(error);
 			   }
 			   else {
@@ -149,8 +151,8 @@ public class ListController {
 			   }
 		   }
 	   }
-	   
-	   /**
+
+	/**
 	    * ADD Button
 	    * @param event
 	    */
@@ -171,11 +173,12 @@ public class ListController {
 		   
 		   if(error == null) {
 				  if(enterTitle != null && enterArtist != null) {
-				   Alert alert = new Alert(AlertType.CONFIRMATION);
+				   Optional<ButtonType> result;
+				   Alert alert = new Alert(AlertType.CONFIRMATION, "yes", ButtonType.YES);
 				   alert.setTitle("Add Item");
-				   String content = "Are you sure you want to add this song " + enterTitle.getText() + " by " + enterArtist.getText() + " ?" ;
+				   String content = "Are you sure you want to add '" + enterTitle.getText() + "' song by " + enterArtist.getText() + " ?" ;
 				   alert.setContentText(content);
-				   alert.showAndWait();
+				   result = alert.showAndWait();
 			   }
 		   }
 		   if (error != null) {
