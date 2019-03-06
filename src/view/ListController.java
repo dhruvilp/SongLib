@@ -134,11 +134,6 @@ public class ListController {
 			   if(songYear.getText() == null && songAlbum.getText() == null && error!=null) {
 				   showError("There is nothing to update!");
 			   }
-			   else if (songYear.getText() != null && songYear.getText().isEmpty() == false) {
-				   if(!songYear.getText().trim().matches("[0-9]+")) {
-				   showError("Only numbers are acceptable!");
-				   }
-			   }
 			   else if (error != null) {
 				   showError(error);
 			   }
